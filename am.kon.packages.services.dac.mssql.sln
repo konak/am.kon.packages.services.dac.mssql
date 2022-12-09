@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1704.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "am.kon.packages.services.dac.mssql", "am.kon.packages.services.dac.mssql.csproj", "{5700408B-E98B-4B74-AC88-31A6F1DBBB11}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5700408B-E98B-4B74-AC88-31A6F1DBBB11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5700408B-E98B-4B74-AC88-31A6F1DBBB11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5700408B-E98B-4B74-AC88-31A6F1DBBB11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5700408B-E98B-4B74-AC88-31A6F1DBBB11}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E70EB017-9D13-4A12-B4A9-CB6A0F558DC4}
+	EndGlobalSection
+EndGlobal
