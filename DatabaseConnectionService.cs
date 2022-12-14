@@ -11,9 +11,9 @@ namespace am.kon.packages.services.dac.mssql
 	/// <summary>
 	/// Component to interact with SQL Server Database
 	/// </summary>
-	public partial class DatabaseConnectionnService
+	public partial class DatabaseConnectionService
 	{
-        private readonly ILogger<DatabaseConnectionnService> _logger;
+        private readonly ILogger<DatabaseConnectionService> _logger;
         private readonly IConfiguration _configuration;
 
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -25,8 +25,8 @@ namespace am.kon.packages.services.dac.mssql
         private readonly DacConfig _dacConfig;
         private readonly ConnectionStringsConfig _connectionStringsConfig;
 
-        public DatabaseConnectionnService(
-            ILogger<DatabaseConnectionnService> logger,
+        public DatabaseConnectionService(
+            ILogger<DatabaseConnectionService> logger,
             IConfiguration configuration,
             IOptions<DacConfig> dacConfigOptions,
             IOptions<ConnectionStringsConfig> connectionStringsConfigOptions

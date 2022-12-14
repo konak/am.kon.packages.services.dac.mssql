@@ -3,7 +3,7 @@ using am.kon.packages.dac.primitives;
 
 namespace am.kon.packages.services.dac.mssql
 {
-    public partial class DatabaseConnectionnService
+    public partial class DatabaseConnectionService
 	{
         /// <summary>
         /// Get new dataset for specified SQL command or stored procedure

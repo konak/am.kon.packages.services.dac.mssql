@@ -3,7 +3,7 @@ using am.kon.packages.dac.primitives;
 
 namespace am.kon.packages.services.dac.mssql
 {
-    public partial class DatabaseConnectionnService
+    public partial class DatabaseConnectionService
 	{
         /// <summary>
         /// Execute SQL command and return value of first column of the first row from results

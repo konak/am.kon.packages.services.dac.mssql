@@ -4,7 +4,7 @@ using System.Data;
 
 namespace am.kon.packages.services.dac.mssql
 {
-	public partial class DatabaseConnectionnService
+	public partial class DatabaseConnectionService
 	{
         /// <summary>
         /// Execute SQL query and return the number of affected values

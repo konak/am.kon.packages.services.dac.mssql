@@ -5,7 +5,7 @@ using am.kon.packages.dac.primitives.Exceptions;
 
 namespace am.kon.packages.services.dac.mssql
 {
-    public partial class DatabaseConnectionnService
+    public partial class DatabaseConnectionService
 	{
 
 
