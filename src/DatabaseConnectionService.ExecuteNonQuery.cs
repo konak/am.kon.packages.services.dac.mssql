@@ -1,6 +1,6 @@
-﻿using System;
+﻿using System.Data;
+using System.Data.SqlClient;
 using am.kon.packages.dac.primitives;
-using System.Data;
 
 namespace am.kon.packages.services.dac.mssql;
 
@@ -21,6 +21,20 @@ public partial class DatabaseConnectionService
         return _defaultDatabase.ExecuteNonQueryAsync(sql, parameters, commandType);
     }
 
+    /// <summary>
+    /// Execute SQL query and return the number of affected values
+    /// </summary>
+    /// <param name="sql">SQL command text to be executed</param>
+    /// <param name="commandType">SQL command type to execute</param>
+    /// <param name="parameters">Parameters of the SQL command</param>
+    /// <returns>Number of affected rows</returns>
+    /// <exception cref="DacSqlExecutionException">Throws if any SqlException has accured</exception>
+    /// <exception cref="DacSqlExecutionReturnedErrorCodeException">Throws if SQL query or stored procedure has returned non zero code</exception>
+    /// <exception cref="DacGenericException">Throws if any Generic exception has accured</exception>
+    public Task<int> ExecuteNonQueryAsync(string sql, SqlParameter[] parameters, CommandType commandType = CommandType.Text)
+    {
+        return _defaultDatabase.ExecuteNonQueryAsync(sql, parameters, commandType);
+    }
     /// <summary>
     /// Execute SQL query and return the number of affected values
     /// </summary>
@@ -93,7 +107,7 @@ public partial class DatabaseConnectionService
     /// <exception cref="DacGenericException">Throws if any Generic exception has accured</exception>
     public Task<int> ExecuteNonQueryAsync<T>(string sql, T parameters, CommandType commandType = CommandType.Text)
     {
-        return _defaultDatabase.ExecuteNonQueryAsync(sql, parameters, commandType);
+        return _defaultDatabase.ExecuteNonQueryAsync<T>(sql, parameters, commandType);
     }
 }
 
