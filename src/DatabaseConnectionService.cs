@@ -50,7 +50,7 @@ public partial class DatabaseConnectionService
 
         foreach (KeyValuePair<string, string> record in _connectionStringsConfig)
         {
-            _databaseConnections.Add(record.Key, new DataBase(record.Value));
+            _databaseConnections.Add(record.Key, new DataBase(record.Value, _cancellationToken));
         }
 
         _defaultDatabase = _databaseConnections[_dacConfig.DefaultConnection];
