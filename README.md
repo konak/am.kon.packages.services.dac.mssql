@@ -126,6 +126,47 @@ await database.ExecuteTransactionalSQLBatchAsync(async transaction =>
 
 For non-transactional batches, call `ExecuteSQLBatchAsync` in the same manner. Both helpers support the familiar `throwDBException`, `throwGenericException`, and `throwSystemException` switches.
 
+### Coordinating updates across databases
+
+When two or more named connections must be updated as a single logical unit, wrap the work in a `TransactionScope`. This promotes the underlying SQL connections to a distributed transaction (MSDTC must be enabled when the servers differ).
+
+```csharp
+using System.Transactions;
+
+public async Task<bool> SynchroniseAsync(DatabaseConnectionService connections, Guid jobId)
+{
+    using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
+    var primary = connections.DefaultDatabase;
+    var archival = connections["Archive"];
+
+    await primary.ExecuteTransactionalSQLBatchAsync(async tx =>
+    {
+        var cmd = (SqlCommand)tx.Connection.CreateCommand();
+        cmd.Transaction = (SqlTransaction)tx;
+        cmd.CommandText = "UPDATE Jobs SET Processed = 1 WHERE JobId = @JobId";
+        cmd.Parameters.AddWithValue("@JobId", jobId);
+        await cmd.ExecuteNonQueryAsync();
+        return 0;
+    });
+
+    await archival.ExecuteTransactionalSQLBatchAsync(async tx =>
+    {
+        var cmd = (SqlCommand)tx.Connection.CreateCommand();
+        cmd.Transaction = (SqlTransaction)tx;
+        cmd.CommandText = "INSERT INTO ProcessedJobs(JobId, CompletedAt) VALUES(@JobId, SYSUTCDATETIME())";
+        cmd.Parameters.AddWithValue("@JobId", jobId);
+        await cmd.ExecuteNonQueryAsync();
+        return 0;
+    });
+
+    scope.Complete();
+    return true;
+}
+```
+
+If MSDTC is unavailable, run the operations sequentially and implement compensating actions for failure scenarios instead.
+
 ## Deriving custom services
 
 When you need to expose domain-specific helpers while keeping DI registration simple, derive from `DatabaseConnectionService` and add strongly typed methods that leverage the protected members and the `DefaultDatabase` property.
