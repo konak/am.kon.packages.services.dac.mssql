@@ -137,31 +137,39 @@ public async Task<bool> SynchroniseAsync(DatabaseConnectionService connections, 
 {
     using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
-    var primary = connections.DefaultDatabase;
-    var archival = connections["Archive"];
-
-    await primary.ExecuteTransactionalSQLBatchAsync(async tx =>
+    try
     {
-        var cmd = (SqlCommand)tx.Connection.CreateCommand();
-        cmd.Transaction = (SqlTransaction)tx;
-        cmd.CommandText = "UPDATE Jobs SET Processed = 1 WHERE JobId = @JobId";
-        cmd.Parameters.AddWithValue("@JobId", jobId);
-        await cmd.ExecuteNonQueryAsync();
-        return 0;
-    });
+        var primary = connections.DefaultDatabase;
+        var archival = connections["Archive"];
 
-    await archival.ExecuteTransactionalSQLBatchAsync(async tx =>
+        await primary.ExecuteTransactionalSQLBatchAsync(async tx =>
+        {
+            var cmd = (SqlCommand)tx.Connection.CreateCommand();
+            cmd.Transaction = (SqlTransaction)tx;
+            cmd.CommandText = "UPDATE Jobs SET Processed = 1 WHERE JobId = @JobId";
+            cmd.Parameters.AddWithValue("@JobId", jobId);
+            await cmd.ExecuteNonQueryAsync();
+            return 0;
+        });
+
+        await archival.ExecuteTransactionalSQLBatchAsync(async tx =>
+        {
+            var cmd = (SqlCommand)tx.Connection.CreateCommand();
+            cmd.Transaction = (SqlTransaction)tx;
+            cmd.CommandText = "INSERT INTO ProcessedJobs(JobId, CompletedAt) VALUES(@JobId, SYSUTCDATETIME())";
+            cmd.Parameters.AddWithValue("@JobId", jobId);
+            await cmd.ExecuteNonQueryAsync();
+            return 0;
+        });
+
+        scope.Complete(); // Commit the distributed transaction
+        return true;
+    }
+    catch
     {
-        var cmd = (SqlCommand)tx.Connection.CreateCommand();
-        cmd.Transaction = (SqlTransaction)tx;
-        cmd.CommandText = "INSERT INTO ProcessedJobs(JobId, CompletedAt) VALUES(@JobId, SYSUTCDATETIME())";
-        cmd.Parameters.AddWithValue("@JobId", jobId);
-        await cmd.ExecuteNonQueryAsync();
-        return 0;
-    });
-
-    scope.Complete();
-    return true;
+        // Omitting scope.Complete causes the TransactionScope to roll back on dispose
+        throw;
+    }
 }
 ```
 
