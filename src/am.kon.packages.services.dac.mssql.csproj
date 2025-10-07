@@ -11,6 +11,8 @@
     <RepositoryUrl>https://github.com/konak/am.kon.packages.services.dac.mssql</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dac mssql service orm am.kon konak</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
