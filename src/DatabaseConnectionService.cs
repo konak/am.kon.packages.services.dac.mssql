@@ -84,15 +84,8 @@ public partial class DatabaseConnectionService
     /// <remarks>
     /// keys of databases should be configured in appsettings.json in DAC section
     /// </remarks>
-    public DataBase this[string key]
+    public DataBase? this[string key]
     {
-        get
-        {
-            if (_databaseConnections.TryGetValue(key, out DataBase dataBase))
-                return dataBase;
-
-            return null;
-        }
+        get => _databaseConnections.TryGetValue(key, out var dataBase) ? dataBase! : null;
     }
 }
-

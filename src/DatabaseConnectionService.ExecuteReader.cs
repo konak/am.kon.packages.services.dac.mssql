@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Data.SqlClient;
 using am.kon.packages.dac.mssql;
 using am.kon.packages.dac.primitives;
 using am.kon.packages.dac.primitives.Exceptions;
@@ -84,4 +83,3 @@ public partial class DatabaseConnectionService
     }
 
 }
-

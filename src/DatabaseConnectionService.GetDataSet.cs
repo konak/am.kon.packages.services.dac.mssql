@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Data.SqlClient;
 using am.kon.packages.dac.mssql;
 using am.kon.packages.dac.primitives;
 using am.kon.packages.dac.primitives.Exceptions;
@@ -27,7 +26,7 @@ public partial class DatabaseConnectionService
     public DataSet GetDataSet(string sql, IDataParameter[] parameters, CommandType commandType = CommandType.Text, bool throwDBException = true, bool throwGenericException = true, bool throwSystemException = true, int startRecord = 0,
         int maxRecords = 0)
     {
-        return GetDataSet(sql, parameters, commandType, throwDBException, throwGenericException, throwSystemException, startRecord, maxRecords);
+        return _defaultDatabase.GetDataSet(sql, parameters, commandType, throwDBException, throwGenericException, throwSystemException, startRecord, maxRecords);
     }
 
     /// <summary>
@@ -48,7 +47,7 @@ public partial class DatabaseConnectionService
     public DataSet GetDataSet(string sql, SqlParameter[] parameters, CommandType commandType = CommandType.Text, bool throwDBException = true, bool throwGenericException = true, bool throwSystemException = true, int startRecord = 0,
         int maxRecords = 0)
     {
-        return GetDataSet(sql, parameters, commandType, throwDBException, throwGenericException, throwSystemException, startRecord, maxRecords);
+        return _defaultDatabase.GetDataSet(sql, parameters, commandType, throwDBException, throwGenericException, throwSystemException, startRecord, maxRecords);
     }
 
     /// <summary>
@@ -71,7 +70,7 @@ public partial class DatabaseConnectionService
         false)]
     public DataSet GetDataSet(string sql, DacSqlParameters parameters, CommandType commandType = CommandType.Text, bool throwDBException = true, bool throwGenericException = true, bool throwSystemException = true, int startRecord = 0, int maxRecords = 0)
     {
-        return GetDataSet(sql, parameters, commandType, throwDBException, throwGenericException, throwSystemException, startRecord, maxRecords);
+        return _defaultDatabase.GetDataSet(sql, parameters, commandType, throwDBException, throwGenericException, throwSystemException, startRecord, maxRecords);
     }
 
     /// <summary>
@@ -92,7 +91,6 @@ public partial class DatabaseConnectionService
     public DataSet GetDataSet(string sql, DacMsSqlParameters parameters, CommandType commandType = CommandType.Text, bool throwDBException = true, bool throwGenericException = true, bool throwSystemException = true, int startRecord = 0,
         int maxRecords = 0)
     {
-        return GetDataSet(sql, parameters, commandType, throwDBException, throwGenericException, throwSystemException, startRecord, maxRecords);
+        return _defaultDatabase.GetDataSet(sql, parameters, commandType, throwDBException, throwGenericException, throwSystemException, startRecord, maxRecords);
     }
 }
-
